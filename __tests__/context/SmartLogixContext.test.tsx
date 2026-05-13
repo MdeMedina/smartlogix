@@ -65,6 +65,7 @@ describe('SmartLogixContext', () => {
 
   // ❌ TEST 4 — Fallo esperado: error en carga de productos mantiene lista vacía
   test('error en getProductos deja productos en array vacío', async () => {
+    const consoleSpy = jest.spyOn(console, 'error').mockImplementation(() => {});
     (inventarioService.getProductos as jest.Mock).mockRejectedValue(new Error('sin conexión'));
     (pedidosService.getPedidos as jest.Mock).mockResolvedValue([]);
     (dashboardService.getDashboardData as jest.Mock).mockResolvedValue({});
@@ -72,10 +73,12 @@ describe('SmartLogixContext', () => {
     render(<SmartLogixProvider><ComponenteTest /></SmartLogixProvider>);
     
     await waitFor(() => expect(screen.getByTestId('count').textContent).toBe('0'));
+    consoleSpy.mockRestore();
   });
 
   // ❌ TEST 5 — Fallo esperado: dashboardService caído marca como parcial
   test('error en getDashboardData marca como parcial', async () => {
+    const consoleSpy = jest.spyOn(console, 'error').mockImplementation(() => {});
     (inventarioService.getProductos as jest.Mock).mockResolvedValue([]);
     (pedidosService.getPedidos as jest.Mock).mockResolvedValue([]);
     (dashboardService.getDashboardData as jest.Mock).mockRejectedValue(new Error('error'));
@@ -83,5 +86,6 @@ describe('SmartLogixContext', () => {
     render(<SmartLogixProvider><ComponenteTest /></SmartLogixProvider>);
     
     await waitFor(() => expect(screen.getByTestId('parcial').textContent).toBe('si'));
+    consoleSpy.mockRestore();
   });
 });
