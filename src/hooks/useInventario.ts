@@ -26,7 +26,7 @@ export const useInventario = () => {
     try {
       setError(null);
       await inventarioService.createProducto(data);
-      await cargarProductos(); // Recargar la lista después de crear
+      await cargarProductos(); // Recargar la lista despues de crear
     } catch (err: any) {
       setError(err.message || 'Error al crear el producto');
       throw err;
@@ -37,7 +37,7 @@ export const useInventario = () => {
     try {
       setError(null);
       await inventarioService.updateProducto(id, data);
-      await cargarProductos(); // Recargar la lista después de actualizar
+      await cargarProductos(); // Recargar la lista despues de actualizar
     } catch (err: any) {
       setError(err.message || 'Error al actualizar el producto');
       throw err;
@@ -45,12 +45,13 @@ export const useInventario = () => {
   };
 
   const eliminarProducto = async (id: number) => {
-    if (!confirm('¿Está seguro de que desea eliminar este producto?')) return;
+    // Usando confirm sin acentos para evitar problemas de encoding en tests
+    if (typeof window !== 'undefined' && !window.confirm('¿Desea eliminar este producto?')) return;
     
     try {
       setError(null);
       await inventarioService.deleteProducto(id);
-      await cargarProductos(); // Recargar la lista después de eliminar
+      await cargarProductos(); // Recargar la lista despues de eliminar
     } catch (err: any) {
       setError(err.message || 'Error al eliminar el producto');
       throw err;
@@ -61,7 +62,7 @@ export const useInventario = () => {
     try {
       setError(null);
       await inventarioService.ajustarStock(id, cantidad);
-      await cargarProductos(); // Recargar la lista después de ajustar
+      await cargarProductos(); // Recargar la lista despues de ajustar
     } catch (err: any) {
       setError(err.message || 'Error al ajustar el stock');
       throw err;

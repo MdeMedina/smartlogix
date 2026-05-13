@@ -38,3 +38,22 @@ export const updateProducto = async (id: number, data: ProductoDTO): Promise<Pro
     return response.data;
   } catch (error: any) {
     throw new Error(error.response?.data?.mensaje || `Error al actualizar el producto ${id}`);
+  }
+};
+
+export const deleteProducto = async (id: number): Promise<void> => {
+  try {
+    await bffApi.delete(`/api/inventario/productos/${id}`);
+  } catch (error: any) {
+    throw new Error(error.response?.data?.mensaje || `Error al eliminar el producto ${id}`);
+  }
+};
+
+export const ajustarStock = async (id: number, cantidad: number): Promise<Producto> => {
+  try {
+    const response = await bffApi.patch<Producto>(`/api/inventario/productos/${id}/stock`, { cantidad });
+    return response.data;
+  } catch (error: any) {
+    throw new Error(error.response?.data?.mensaje || `Error al ajustar stock del producto ${id}`);
+  }
+};
