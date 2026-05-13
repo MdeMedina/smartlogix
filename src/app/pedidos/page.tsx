@@ -52,7 +52,7 @@ export default function PedidosPage() {
     <div style={{ padding: '24px' }}>
       <h1>Gestión de Pedidos</h1>
 
-      {errorGlobal && (
+      {errorGlobal && errorGlobal !== toastMessage && (
         <div style={{ backgroundColor: '#fee2e2', color: '#ef4444', padding: '12px', marginBottom: '16px', borderRadius: '4px' }}>
           {errorGlobal}
         </div>
